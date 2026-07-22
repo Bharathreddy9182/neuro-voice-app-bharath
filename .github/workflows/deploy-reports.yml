@@ -15,7 +15,7 @@ permissions:
 jobs:
   deploy-github-pages:
     name: "Publish Latest & Historical Reports to GitHub Pages"
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: "📥 Checkout Code"
@@ -32,10 +32,12 @@ jobs:
           npm install --legacy-peer-deps
           node runners/TestRunner.js
           mkdir -p ../public/reports/latest
-          mkdir -p ../public/reports/history/build-${{ github.run_number }}
-          cp -r "../reports/Test Results/HTML/"* ../public/reports/latest/
-          cp -r "../reports/Test Results/HTML/"* ../public/reports/history/build-${{ github.run_number }}/
-          cp "../reports/Test Results/Summary/summary.md" ../public/reports/latest/summary.md
+          mkdir -p "../public/reports/history/build-${{ github.run_number }}"
+          cp -r "../reports/Test Results/HTML/"* ../public/reports/latest/ || true
+          cp -r "../reports/Test Results/HTML/"* "../public/reports/history/build-${{ github.run_number }}/" || true
+          if [ -f "../reports/Test Results/Summary/summary.md" ]; then
+            cp "../reports/Test Results/Summary/summary.md" ../public/reports/latest/summary.md
+          fi
 
       - name: "🚀 Deploy Reports to gh-pages Branch"
         uses: peaceiris/actions-gh-pages@v4
