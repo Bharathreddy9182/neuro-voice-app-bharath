@@ -15,18 +15,18 @@ permissions:
 jobs:
   deploy-github-pages:
     name: "Publish Latest & Historical Reports to GitHub Pages"
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
-      - name: "📥 Checkout Code"
+      - name: "Checkout Code"
         uses: actions/checkout@v4
 
-      - name: "🟢 Setup Node.js 20"
+      - name: "Setup Node.js 20"
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: "📦 Build Reports Payload"
+      - name: "Build Reports Payload"
         run: |
           cd automation
           npm install --legacy-peer-deps
@@ -39,9 +39,10 @@ jobs:
             cp "../reports/Test Results/Summary/summary.md" ../public/reports/latest/summary.md
           fi
 
-      - name: "🚀 Deploy Reports to gh-pages Branch"
+      - name: "Deploy Reports to gh-pages Branch"
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
           force_orphan: true
+        continue-on-error: true
