@@ -1,0 +1,36 @@
+{
+  "name": "enterprise-android-appium-framework",
+  "version": "1.0.0",
+  "description": "Enterprise-Grade Android Appium E2E Automation Framework with 400+ Test Cases, Multi-Sheet Excel Reporting, HTML Dashboards, and GitHub Actions CI/CD with GitHub Pages deployment.",
+  "main": "runners/TestRunner.js",
+  "scripts": {
+    "test:400": "node runners/TestRunner.js",
+    "report:excel": "node -e \"require('./utils/ExcelReportEngine').generateAllReports()\"",
+    "report:html": "node -e \"require('./utils/HtmlReportEngine').generateAllReports()\"",
+    "clean:reports": "rimraf reports/Test\\ Results/* screenshots/* logs/*"
+  },
+  "keywords": [
+    "appium",
+    "android",
+    "e2e-testing",
+    "automation",
+    "exceljs",
+    "html-reporting",
+    "ci-cd",
+    "github-pages"
+  ],
+  "author": "Enterprise SDET & Mobile QA Architect",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.3.10",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
+    "exceljs": "^4.4.0",
+    "fs-extra": "^11.2.0",
+    "mocha": "^10.4.0",
+    "path": "^0.12.7",
+    "rimraf": "^5.0.7",
+    "webdriverio": "^8.38.0",
+    "winston": "^3.13.0"
+  }
+}
