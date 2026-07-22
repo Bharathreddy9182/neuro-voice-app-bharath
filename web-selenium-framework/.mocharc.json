@@ -1,0 +1,20 @@
+{
+  "diff": true,
+  "extension": ["js"],
+  "package": "./package.json",
+  "reporter": "mochawesome",
+  "reporter-option": [
+    "reportDir=reports",
+    "reportFilename=index",
+    "quiet=true",
+    "json=true",
+    "html=true",
+    "overwrite=true",
+    "timestamp=false"
+  ],
+  "require": ["tests/hooks.js"],
+  "slow": 75,
+  "timeout": 180000,
+  "ui": "bdd",
+  "exit": true
+}
