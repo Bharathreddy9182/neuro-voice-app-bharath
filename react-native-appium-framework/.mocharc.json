@@ -12,6 +12,7 @@
     "overwrite=true",
     "timestamp=false"
   ],
+  "require": ["tests/hooks.js"],
   "slow": 75,
   "timeout": 180000,
   "ui": "bdd",
