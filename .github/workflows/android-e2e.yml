@@ -1,4 +1,4 @@
-name: 📱 Enterprise Android E2E Appium Automation & Reporting Pipeline
+name: "📱 Enterprise Android E2E Appium Automation Pipeline"
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *' # Daily midnight run
+    - cron: '0 0 * * *'
 
 permissions:
   contents: write
@@ -16,47 +16,47 @@ permissions:
 
 jobs:
   android-e2e-pipeline:
-    name: 21-Stage Enterprise Android CI/CD Pipeline
+    name: "21-Stage Enterprise Android CI/CD Pipeline"
     runs-on: ubuntu-latest
 
     steps:
       # Stage 1: Checkout Repository
-      - name: 📥 Stage 1 - Checkout Repository
+      - name: "📥 Stage 1 - Checkout Repository"
         uses: actions/checkout@v4
 
       # Stage 2: Setup Java
-      - name: ☕ Stage 2 - Setup Java Development Kit (JDK 17)
+      - name: "☕ Stage 2 - Setup Java Development Kit (JDK 17)"
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
       # Stage 3: Setup Android SDK
-      - name: 📱 Stage 3 - Setup Android SDK Tools
+      - name: "📱 Stage 3 - Setup Android SDK Tools"
         uses: actions/setup-android@v3
 
       # Stage 4: Install Android Dependencies
-      - name: 📦 Stage 4 - Install Node.js & Android Dependencies
+      - name: "📦 Stage 4 - Install Node.js & Android Dependencies"
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: 'automation/package.json'
 
-      - name: 📦 Install Automation Engine Dependencies
+      - name: "📦 Install Automation Engine Dependencies"
         run: |
           cd automation
           npm install --legacy-peer-deps
 
       # Stage 5: Build APK
-      - name: 🔨 Stage 5 - Build Android APK
+      - name: "🔨 Stage 5 - Build Android APK"
         run: |
           echo "Building Android Debug APK artifact..."
           mkdir -p android/app/build/outputs/apk/debug
           touch android/app/build/outputs/apk/debug/app-debug.apk
 
       # Stage 6: Start Android Emulator
-      - name: 🤖 Stage 6 - Start Android Emulator (API 33)
+      - name: "🤖 Stage 6 - Start Android Emulator (API 33)"
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 33
@@ -66,70 +66,70 @@ jobs:
           script: echo "Android Emulator started successfully."
 
       # Stage 7: Verify Emulator Readiness
-      - name: 🔍 Stage 7 - Verify Emulator Readiness via ADB
+      - name: "🔍 Stage 7 - Verify Emulator Readiness via ADB"
         run: |
           echo "Verifying active Android devices..."
           adb devices || true
 
       # Stage 8: Install APK
-      - name: 📲 Stage 8 - Install APK on Android Emulator
+      - name: "📲 Stage 8 - Install APK on Android Emulator"
         run: |
           echo "Installing APK on target emulator..."
 
       # Stage 9: Start Appium Server
-      - name: ⚡ Stage 9 - Start Appium 2.x Server
+      - name: "⚡ Stage 9 - Start Appium 2.x Server"
         run: |
           npx appium --version || true
 
       # Stage 10: Verify Appium Health
-      - name: 🏥 Stage 10 - Verify Appium Health
+      - name: "🏥 Stage 10 - Verify Appium Health"
         run: |
           echo "Appium server endpoint healthy at http://127.0.0.1:4723/"
 
-      # Stage 11: Execute Appium E2E Tests (500+ Test Cases)
-      - name: 🚀 Stage 11 - Execute 500+ Appium E2E Test Suite
+      # Stage 11: Execute Appium E2E Tests
+      - name: "🚀 Stage 11 - Execute 500+ Appium E2E Test Suite"
         run: |
           cd automation
           node runners/TestRunner.js
 
       # Stage 12: Capture Screenshots
-      - name: 📸 Stage 12 - Capture Failure & Device Screenshots
+      - name: "📸 Stage 12 - Capture Failure & Device Screenshots"
         if: always()
         run: |
           mkdir -p "reports/Test Results/Screenshots"
 
       # Stage 13: Capture Logs
-      - name: 📋 Stage 13 - Capture Device & Appium Execution Logs
+      - name: "📋 Stage 13 - Capture Device & Appium Execution Logs"
         if: always()
         run: |
           mkdir -p "reports/Test Results/Logs"
 
       # Stage 14: Generate Excel Report
-      - name: 📊 Stage 14 - Verify Excel Workbooks (4 Workbooks / 7 Sheets)
+      - name: "📊 Stage 14 - Verify Excel Workbooks (4 Workbooks / 7 Sheets)"
         if: always()
         run: |
           ls -la "reports/Test Results/Excel/"
 
       # Stage 15: Generate HTML Report
-      - name: 🌐 Stage 15 - Verify HTML Dashboards
+      - name: "🌐 Stage 15 - Verify HTML Dashboards"
         if: always()
         run: |
           ls -la "reports/Test Results/HTML/"
 
       # Stage 16: Generate JSON Report
-      - name: 📄 Stage 16 - Verify JSON Results Payload
+      - name: "📄 Stage 16 - Verify JSON Results Payload"
         if: always()
         run: |
           ls -la "reports/Test Results/JSON/"
 
       # Stage 17: Generate Markdown Summary
-      - name: 📝 Stage 17 - Generate Markdown Job Summary
+      - name: "📝 Stage 17 - Generate Markdown Job Summary"
         if: always()
         run: |
           cat "reports/Test Results/Summary/summary.md" >> $GITHUB_STEP_SUMMARY
 
       # Stage 18: Upload Artifacts
-      - name: 📤 Stage 18 - Upload Test Artifacts (Retention: 30 Days)
+      - name: "📤 Stage 18 - Upload Test Artifacts (30 Days Retention)"
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -142,7 +142,7 @@ jobs:
           retention-days: 30
 
       # Stage 19: Publish Reports to GitHub Pages
-      - name: 🌐 Stage 19 - Prepare GitHub Pages Distribution
+      - name: "🌐 Stage 19 - Prepare GitHub Pages Distribution"
         if: always()
         run: |
           mkdir -p public/reports/latest
@@ -151,7 +151,8 @@ jobs:
           cp -r "reports/Test Results/HTML/"* public/reports/history/build-${{ github.run_number }}/
           cp "reports/Test Results/Summary/summary.md" public/reports/latest/summary.md
 
-      - name: 🚀 Stage 20 & 21 - Publish to GitHub Pages
+      # Stage 20 & 21: Publish to GitHub Pages
+      - name: "🚀 Stage 20 and 21 - Publish to GitHub Pages"
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v4
         with:

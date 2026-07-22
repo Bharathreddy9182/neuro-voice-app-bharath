@@ -1,8 +1,8 @@
-name: 🌐 Deploy Automation Reports to GitHub Pages
+name: "🌐 Deploy Automation Reports to GitHub Pages"
 
 on:
   workflow_run:
-    workflows: ["📱 Enterprise Android E2E Appium Automation & Reporting Pipeline"]
+    workflows: ["📱 Enterprise Android E2E Appium Automation Pipeline"]
     types:
       - completed
   workflow_dispatch:
@@ -14,19 +14,19 @@ permissions:
 
 jobs:
   deploy-github-pages:
-    name: Publish Latest & Historical Reports to GitHub Pages
+    name: "Publish Latest & Historical Reports to GitHub Pages"
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout Code
+      - name: "📥 Checkout Code"
         uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js 20
+      - name: "🟢 Setup Node.js 20"
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: 📦 Build Reports Payload
+      - name: "📦 Build Reports Payload"
         run: |
           cd automation
           npm install --legacy-peer-deps
@@ -37,7 +37,7 @@ jobs:
           cp -r "../reports/Test Results/HTML/"* ../public/reports/history/build-${{ github.run_number }}/
           cp "../reports/Test Results/Summary/summary.md" ../public/reports/latest/summary.md
 
-      - name: 🚀 Deploy Reports to gh-pages Branch
+      - name: "🚀 Deploy Reports to gh-pages Branch"
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
