@@ -36,14 +36,14 @@ export default function RegisterScreen() {
         router.replace("/login");
       }
     } catch (error: any) {
-  console.log("REGISTER ERROR:", error);
-  console.log("RESPONSE:", error?.response?.data);
+      console.log("REGISTER ERROR:", error);
+      console.log("RESPONSE:", error?.response?.data);
 
-  Alert.alert(
-    "Error",
-    JSON.stringify(error?.response?.data || error?.message)
-  );
-}
+      Alert.alert(
+        "Error",
+        JSON.stringify(error?.response?.data || error?.message)
+      );
+    }
   };
 
   return (

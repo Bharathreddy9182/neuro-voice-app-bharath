@@ -26,27 +26,27 @@ export default function LoginScreen() {
         }
       );
 
-        if (response.data.success) {
+      if (response.data.success) {
 
         await AsyncStorage.setItem(
-            "token",
-            response.data.token
+          "token",
+          response.data.token
         );
 
         await AsyncStorage.setItem(
-            "user",
-            JSON.stringify(response.data.user)
+          "user",
+          JSON.stringify(response.data.user)
         );
 
         router.replace("/(tabs)/home");
-        }
+      }
     } catch (error: any) {
-        Alert.alert(
-            "Error",
-            error?.response?.data?.message ||
-            "Login Failed"
-        );
-        }
+      Alert.alert(
+        "Error",
+        error?.response?.data?.message ||
+        "Login Failed"
+      );
+    }
   };
 
   return (
